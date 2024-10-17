@@ -1,0 +1,25 @@
+{
+  "name": "ai-search-app",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^2.0.0",
+    "@sveltejs/kit": "^1.27.4",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "svelte": "^4.0.5",
+    "tailwindcss": "^3.3.2",
+    "vite": "^4.4.2"
+  },
+  "type": "module",
+  "dependencies": {
+    "daisyui": "^3.9.4",
+    "jsdom": "^22.1.0",
+    "openai": "^4.0.0",
+    "tiktoken": "^1.0.7"
+  }
+}
