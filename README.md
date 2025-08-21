@@ -1,157 +1,124 @@
-# Lorg - AI-Powered Search Engine
+# Lorg
 
-Lorg (short for "Explore" in Danish) is an intelligent search application that combines the power of Large Language Models (LLMs) with web search capabilities to provide accurate, context-aware answers to user queries.
+An AI-powered search engine with knowledge graph generation.
 
-## Table of Contents
+## Installation
 
-- [Features](#features)
-- [How It Works](#how-it-works)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-  - [Local Development](#local-development)
-  - [Docker Deployment](#docker-deployment)
-- [Project Structure](#project-structure)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
+```bash
+npm install -g lorg
+```
+
+## Usage
+
+### As a CLI tool
+
+```bash
+# Set your OpenAI API key
+export OPENAI_API_KEY=your_api_key_here
+
+# Run a search
+lorg "What is the capital of France?"
+
+# Or provide the API key directly
+lorg -k your_api_key_here "What is the capital of France?"
+
+# Specify a model
+lorg -m gpt-4o "What is the capital of France?"
+
+# Limit results
+lorg -r 3 "What is the capital of France?"
+```
+
+### As a server
+
+```bash
+# Start the server
+lorg server
+
+# Start the server on a specific port
+lorg server -p 8080
+
+# Start the server with API key
+lorg server -k your_api_key_here
+
+# Or set the API key as an environment variable
+export OPENAI_API_KEY=your_api_key_here
+lorg server
+```
+
+The server exposes two endpoints:
+- `GET /health` - Health check endpoint
+- `POST /search` - Search endpoint that accepts JSON with `query`, `model`, and `maxResults` fields
+
+Example server usage:
+```bash
+curl -X POST http://localhost:3000/search \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What is the capital of France?", "model": "gpt-4o", "maxResults": 3}'
+```
+
+### As a library
+
+```javascript
+import LorgSearch from 'lorg';
+
+const searcher = new LorgSearch('your-openai-api-key');
+
+const results = await searcher.search('What is the capital of France?', {
+  model: 'gpt-4o-mini',
+  maxResults: 5
+});
+
+console.log(results.answer);
+console.log(results.knowledgeGraph);
+console.log(results.keywords);
+console.log(results.results);
+```
+
+## Environment Variables
+
+The following environment variables can be used to configure Lorg:
+
+- `OPENAI_API_KEY` - Your OpenAI API key (required)
+- `OPENAI_BASE_URL` - Custom OpenAI API base URL (optional)
+- `LORG_DEFAULT_MODEL` - Default model to use (default: "gpt-4o-mini")
+- `LORG_SEARCH_API_URL` - Search API URL (default: "https://search-dev.d736.uk/search")
+- `LORG_SEARCH_ENGINES` - Comma-separated list of search engines (default: "google,yahoo,bing,duckduckgo")
+- `LORG_SEARCH_LIMIT` - Maximum number of search results (default: "20")
+- `PORT` - Port for the server (default: 3000)
 
 ## Features
 
-- **LLM-Powered Answers**: Uses OpenAI's GPT models to generate accurate and concise answers to user queries
-- **Knowledge Graph Generation**: Creates structured representations of information with entities and relationships
-- **Smart Web Search**: Integrates with SearxNG to find relevant web content
-- **Content Analysis**: Processes and analyzes web content to extract relevant information
-- **Keyword Extraction**: Automatically identifies important keywords for refined searches
-- **Token Tracking**: Monitors API usage with token counting
-- **Responsive UI**: Built with SvelteKit, TailwindCSS, and DaisyUI for a modern, responsive interface
+- AI-powered search with natural language understanding
+- Knowledge graph generation for search queries
+- Keyword extraction for improved search results
+- Web content scraping and analysis
+- Token usage tracking
+- Configurable OpenAI models
+- Both CLI and server modes
+- Environment variable configuration
 
-## How It Works
+## API
 
-1. **Query Input**: User enters a search query in the search bar
-2. **LLM Processing**: The app sends the query to OpenAI to generate:
-   - A concise answer to the query
-   - A knowledge graph with entities and relationships
-3. **Keyword Extraction**: The app extracts relevant keywords from the knowledge graph
-4. **Web Search**: Uses the keywords to search the web via SearxNG
-5. **Content Scraping**: Fetches and processes content from relevant search results
-6. **Content Analysis**: Analyzes the scraped content to find the most relevant information
-7. **Results Display**: Presents the LLM answer, knowledge graph, keywords, and best matching content to the user
+### `new LorgSearch(apiKey)`
 
-## Tech Stack
+Create a new LorgSearch instance with your OpenAI API key.
 
-- **Frontend**: SvelteKit, TailwindCSS, DaisyUI
-- **Backend**: SvelteKit server-side routes
-- **AI**: OpenAI GPT models
-- **Web Search**: SearxNG integration
-- **Styling**: TailwindCSS with DaisyUI components
-- **Build Tool**: Vite
-- **Containerization**: Docker
+### `search(query, options)`
 
-## Prerequisites
+Perform a search with the given query.
 
-- Node.js (v16 or higher) for local development
-- Docker (v20 or higher) for containerized deployment
-- OpenAI API key
+Options:
+- `model`: The OpenAI model to use (default: 'gpt-4o-mini')
+- `maxResults`: Maximum number of results to return (default: 5)
 
-## Setup
-
-### Local Development
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd lorg
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file in the root directory with your OpenAI API key:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-### Docker Deployment
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd lorg
-   ```
-
-2. Create a `.env` file in the root directory with your OpenAI API key:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-3. Build the Docker image:
-   ```bash
-   docker build -t lorg .
-   ```
-
-4. Run the container:
-   ```bash
-   docker run -p 3000:3000 --env-file .env lorg
-   ```
-
-5. Access the application at `http://localhost:3000`
-
-## Project Structure
-
-```
-src/
-├── lib/
-│   ├── api.js          # API functions for backend communication
-│   ├── store.js        # Svelte stores for state management
-│   └── tokenCounter.js # Token counting utilities
-├── routes/
-│   ├── api/
-│   │   ├── openai/
-│   │   │   └── +server.js  # OpenAI API integration
-│   │   └── scrape/
-│   │       └── +server.js  # Web scraping functionality
-│   ├── +layout.svelte      # Main layout component
-│   └── +page.svelte        # Main page component
-├── app.css                 # Global CSS (Tailwind directives)
-└── app.html                # HTML template
-```
-
-## Development
-
-To start the development server:
-
-```bash
-npm run dev
-```
-
-To build the project:
-
-```bash
-npm run build
-```
-
-To preview the production build:
-
-```bash
-npm run preview
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Returns a Promise that resolves to an object with:
+- `answer`: The LLM-generated answer
+- `knowledgeGraph`: Structured representation of the query
+- `keywords`: Extracted search keywords
+- `results`: Array of search results with scores
+- `tokenCount`: Total tokens used in the search
 
 ## License
 
-This project is licensed under the MIT License.
+MIT
