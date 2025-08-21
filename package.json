@@ -27,7 +27,7 @@
     "cli",
     "server"
   ],
-  "author": "Your Name",
+  "author": "Dipankar Sarkar",
   "license": "MIT",
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
