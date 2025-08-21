@@ -1,7 +1,8 @@
 {
   "name": "lorg",
   "version": "1.0.0",
-  "description": "AI-powered search engine with knowledge graph generation",
+  "description": "LLM-powered search engine library with knowledge graph generation",
+  "author": "Dipankar Sarkar <me@dipankar.name>",
   "main": "dist/index.js",
   "bin": {
     "lorg": "bin/lorg.js"
