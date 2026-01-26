@@ -1,52 +1,88 @@
 {
   "name": "lorg",
-  "version": "1.0.0",
-  "description": "LLM-powered search engine library with knowledge graph generation",
+  "version": "1.0.1",
+  "description": "AI-powered search engine that thinks before it searches. Combines LLMs with knowledge graphs for precise, context-aware answers.",
   "author": "Dipankar Sarkar <me@dipankar.name>",
+  "license": "MIT",
+  "homepage": "https://docs.skelfresearch.com/slorg",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skelf-research/slorg.git"
+  },
+  "bugs": {
+    "url": "https://github.com/skelf-research/slorg/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/nickel-org"
+  },
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "default": "./dist/server.js"
+    }
+  },
   "bin": {
     "lorg": "bin/lorg.js"
   },
   "files": [
     "dist/",
     "bin/",
-    "lib/",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "npm run build:lib",
     "build:lib": "node scripts/build-lib.js",
     "dev": "vite dev",
+    "dev:web": "vite dev",
     "preview": "vite preview",
+    "test": "node tests/lib.test.js",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
     "ai",
     "search",
     "openai",
+    "gpt",
+    "llm",
     "knowledge-graph",
+    "semantic-search",
+    "rag",
+    "retrieval",
     "cli",
-    "server"
+    "api",
+    "server",
+    "web-scraping",
+    "natural-language",
+    "chatgpt"
   ],
-  "author": "Dipankar Sarkar",
-  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsdom": "^22.1.0",
+    "openai": "^4.0.0",
+    "tiktoken": "^1.0.7"
+  },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.27.4",
     "autoprefixer": "^10.4.14",
+    "daisyui": "^3.9.4",
     "postcss": "^8.4.24",
     "svelte": "^4.0.5",
     "tailwindcss": "^3.3.2",
     "vite": "^4.4.2"
-  },
-  "type": "module",
-  "dependencies": {
-    "daisyui": "^3.9.4",
-    "jsdom": "^22.1.0",
-    "openai": "^4.0.0",
-    "tiktoken": "^1.0.7",
-    "commander": "^11.0.0",
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
   }
 }
