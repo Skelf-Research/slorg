@@ -1,10 +1,11 @@
 site_name: LORG Documentation
 site_description: The search engine that thinks before it searches. AI-powered search with knowledge graph generation.
 site_author: Dipankar Sarkar
-site_url: https://docs.skelfresearch.com/slorg
+site_url: https://docs.skelfresearch.com/slorg/
 
-repo_name: skelf-research/slorg
-repo_url: https://github.com/skelf-research/slorg
+repo_name: Skelf-Research/slorg
+edit_uri: edit/main/documentation/docs/
+repo_url: https://github.com/Skelf-Research/slorg
 
 theme:
   name: material
